@@ -13,7 +13,6 @@ Windows (PowerShell / CMD):
 4. Instalar todas las dependencias necesarias
 pip install ultralytics sounddevice pyautogui opencv-python numpy
 
-Comandos de Ejecución
 Ejecutar la aplicación principal
 python main.py
 
