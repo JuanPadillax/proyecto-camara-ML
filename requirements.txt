@@ -1,0 +1,5 @@
+sounddevice
+ultralytics
+opencv-python
+pyautogui
+numpy
