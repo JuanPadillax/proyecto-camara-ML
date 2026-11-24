@@ -1,3 +1,10 @@
+Librerias
+-ultralytics
+-opencv-python
+-sounddevice
+-pyautogui
+-numpy
+
 Comandos de Configuración e Instalación
 1. Ubicarse en la raíz del proyecto
 
