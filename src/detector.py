@@ -71,7 +71,7 @@ class DualModeController:
     def process_frame(self, frame):
         h, w, _ = frame.shape
         current_conf = 0.22
-        y_max_limit = h * 0.85  # Permite detectar tus brazos aunque estés de pie alejándote de la cámara
+        y_max_limit = h * 0.85
 
         results = self.model(frame, verbose=False, conf=current_conf)[0]
         action_triggered = None
@@ -86,7 +86,6 @@ class DualModeController:
             confs = results.keypoints.conf[0].cpu().numpy() if results.keypoints.conf is not None else None
 
             if len(kpts) >= 11:
-                # Keypoints: 0: Nariz, 1: Ojo Izq, 2: Ojo Der, 9: Muñeca Izq, 10: Muñeca Der
                 nose_x, nose_y = kpts[0]
                 l_eye_x, l_eye_y = kpts[1]
                 r_eye_x, r_eye_y = kpts[2]
@@ -100,37 +99,28 @@ class DualModeController:
                 lw_conf = confs[9] if confs is not None else 1.0
                 rw_conf = confs[10] if confs is not None else 1.0
 
-                # --------------------------------------------------------
-                # DETECCION FACIAL ESCALABLE Y RELATIVA AL TAMAÑO DEL ROSTRO
-                # --------------------------------------------------------
                 looking_up = False
                 head_tilt_action = None
 
                 if nose_conf > 0.2 and l_eye_conf > 0.2 and r_eye_conf > 0.2:
-                    # Distancia real en píxeles entre ambos ojos (Escala del rostro)
                     eye_dist = np.hypot(l_eye_x - r_eye_x, l_eye_y - r_eye_y)
 
-                    if eye_dist > 3:  # Validar que el rostro esté dentro del marco
+                    if eye_dist > 3:
                         eyes_mid_y = (l_eye_y + r_eye_y) / 2.0
                         nose_vertical_diff = nose_y - eyes_mid_y
                         
-                        # Ratios independientes de la distancia a la cámara
                         pitch_ratio = nose_vertical_diff / eye_dist
                         roll_ratio = (l_eye_y - r_eye_y) / eye_dist
 
-                        # Mirar hacia arriba: La nariz se eleva recortando la distancia 2D con los ojos
                         looking_up = (pitch_ratio < 0.22)
 
-                        # Inclinación lateral (Solo activa en Modo Música)
+                        # Inclinación lateral invertida
                         if self.mode == 'MUSIC' and not looking_up:
                             if roll_ratio < -0.32:
-                                head_tilt_action = 'volumeup'
-                            elif roll_ratio > 0.32:
                                 head_tilt_action = 'volumedown'
+                            elif roll_ratio > 0.32:
+                                head_tilt_action = 'volumeup'
 
-                # --------------------------------------------------------
-                # EJECUCION DE GESTOS
-                # --------------------------------------------------------
                 if looking_up and not in_mode_cooldown:
                     self.toggle_mode(current_time)
                     action_triggered = f"MODO: {self.mode}"

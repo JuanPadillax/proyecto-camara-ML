@@ -13,35 +13,32 @@ Windows (PowerShell / CMD):
 4. Instalar todas las dependencias necesarias
 pip install ultralytics sounddevice pyautogui opencv-python numpy
 
-Comandos de Ejecución
 Ejecutar la aplicación principal
 python main.py
 
 Salir del entorno virtual al finalizar
 deactivate
 
-Controles y Gestos del Sistema
+Gestos Faciales y Cabeza
+Mirar hacia Arriba: Cambiar entre Modo Presentación y Modo Música (Cooldown: 2.2s).
 
-Controles por Teclado
-m: Alternar entre Modo Presentación (Azul) y Modo Música (Verde).
-q: Salir de la aplicación y cerrar ventanas/audio.
+Inclinar Cabeza a la Derecha: Subir Volumen (Volumen +) — Exclusivo Modo Música.
 
-Gestos con la Cámara
+Inclinar Cabeza a la Izquierda: Bajar Volumen (Volumen -) — Exclusivo Modo Música.
+
+Gestos con Manos (Cámara)
 Mano al sector Izquierdo:
+
 Modo Presentación: Diapositiva Anterior (<-)
+
 Modo Música: Canción Anterior
 
 Mano al sector Derecho:
+
 Modo Presentación: Diapositiva Siguiente (->)
+
 Modo Música: Canción Siguiente
 
 Mano al sector Centro:
-Modo Música: Play / Pausa (Abre Spotify si está cerrado)
 
-Mano sobre la Cabeza:
-Modo Presentación: Sin acción asignada
-Modo Música: Subir Volumen
-
-Ambas Manos Levantadas:
-Modo Presentación: Cambiar a Modo Música
-Modo Música: Cambiar a Modo Presentación
+Modo Música: Play / Pausa (Abre Spotify automáticamente si está cerrado)
